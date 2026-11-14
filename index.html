@@ -1,18 +1,357 @@
-userBalance -= price;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Niyaz Store</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --balance-bg: #2dd4bf;
+            --balance-text: #0f172a;
+            --border-color: #334155;
+            --rub-color: #94a3b8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, var(--bg-color));
+            color: var(--tg-theme-text-color, var(--text-color));
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-bottom: 70px;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            background: var(--card-bg);
+            padding: 15px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .store-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin: 0;
+        }
+        .balance-box {
+            background: var(--balance-bg);
+            color: var(--balance-text);
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .lang-switch {
+            display: flex;
+            background: #0f172a;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .lang-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .timer-bar {
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+            padding: 10px 0;
+            background: rgba(255,255,255,0.05);
+            margin: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 0 15px;
+            margin-top: 10px;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+        .item-image {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, #3b82f6, var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        .item-details {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        .item-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .item-price-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;
+        }
+        .item-price-v {
+            font-size: 13px;
+            color: var(--balance-bg);
+            font-weight: bold;
+        }
+        .item-price-rub {
+            font-size: 11px;
+            color: var(--rub-color);
+        }
+        .buy-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .buy-btn:active {
+            background: var(--accent-hover);
+            transform: scale(0.98);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+        .nav-item {
+            font-size: 24px;
+            color: #64748b;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1 class="store-name" id="ui-store-name">Магазин Нияза</h1>
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+        <div class="balance-box" id="balance-display">1200 V</div>
+    </div>
+
+    <div class="timer-bar" id="timer-text">Загрузка...</div>
+
+    <div class="shop-grid" id="shop-container"></div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active">🏠</div>
+        <div class="nav-item">🛒</div>
+        <div class="nav-item">👤</div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // ==========================================
+        // ⚙️ НАСТРОЙКИ МАГАЗИНА (РЕДАКТИРУЙ ЗДЕСЬ!)
+        // ==========================================
+        // Чтобы добавить новый предмет, скопируй блок в фигурных скобках { ... },
+        // вставь его ниже и поменяй данные.
+        const shopItems = [
+            { 
+                id: 1, 
+                emoji: "🛡️", 
+                priceV: 800,  // Цена в В-баксах
+                priceRub: 780, // Цена в рублях
+                nameRu: "Скин 'Рыцарь'", 
+                nameEn: "Knight Skin" 
+            },
+            { 
+                id: 2, 
+                emoji: "🪓", 
+                priceV: 500, 
+                priceRub: 490, 
+                nameRu: "Кирка 'Дракон'", 
+                nameEn: "Dragon Pickaxe" 
+            },
+            { 
+                id: 3, 
+                emoji: "💃", 
+                priceV: 200, 
+                priceRub: 190, 
+                nameRu: "Танец 'Флоп'", 
+                nameEn: "Flop Dance" 
+            },
+            { 
+                id: 4, 
+                emoji: "😂", 
+                priceV: 100, 
+                priceRub: 90, 
+                nameRu: "Эмоция 'Смех'", 
+                nameEn: "Laugh Emote" 
+            },
+            { 
+                id: 5, 
+                emoji: "👻", 
+                priceV: 1200, 
+                priceRub: 1100, 
+                nameRu: "Скин 'Призрак'", 
+                nameEn: "Ghost Skin" 
+            }
+        ];
+        // ==========================================
+
+
+        // БАЗА ПЕРЕВОДОВ (кнопки и текст)
+        const translations = {
+            ru: {
+                storeName: "Магазин Нияза",
+                timerPrefix: "Обновление магазина через: ",
+                buyBtn: "Купить",
+                noMoney: "Недостаточно вбаксов!",
+                success: "Успешно куплено!"
+            },
+            en: {
+                storeName: "Niyaz's Store",
+                timerPrefix: "Shop updates in: ",
+                buyBtn: "Buy",
+                noMoney: "Not enough V-Bucks!",
+                success: "Successfully purchased!"
+            }
+        };
+
+        let currentLang = 'ru';
+
+        // Баланс
+        let userBalance = localStorage.getItem('vbucks');
+        if (!userBalance) {
+            userBalance = 1200;
+            localStorage.setItem('vbucks', userBalance);
+        }
+        document.getElementById('balance-display').innerText = userBalance + ' V';
+
+        // Смена языка
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('ui-store-name').innerText = translations[lang].storeName;
+            renderShop();
+            updateTimer();
+        }
+
+        // Отрисовка
+        function renderShop() {
+            const container = document.getElementById('shop-container');
+            container.innerHTML = '';
+            
+            shopItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                
+                const itemName = currentLang === 'ru' ? item.nameRu : item.nameEn;
+                const buyText = translations[currentLang].buyBtn;
+
+                card.innerHTML = `
+                    <div class="item-image">${item.emoji}</div>
+                    <div class="item-details">
+                        <div>
+                            <div class="item-name">${itemName}</div>
+                            <div class="item-price-row">
+                                <span class="item-price-v">${item.priceV} V-Bucks</span>
+                                <span class="item-price-rub">~ ${item.priceRub} ₽</span>
+                            </div>
+                        </div>
+                        <button class="buy-btn" onclick="buyItem(${item.id}, ${item.priceV})">${buyText}</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Покупка
+        function buyItem(id, price) {
+            if (userBalance >= price) {
+                userBalance -= price;
                 localStorage.setItem('vbucks', userBalance);
-                document.getElementById('balance').innerText = userBalance + ' V-Bucks';
-                tg.showAlert("Успешно куплено!");
+                document.getElementById('balance-display').innerText = userBalance + ' V';
+                
+                tg.showPopup({
+                    title: '✔️',
+                    message: translations[currentLang].success,
+                    buttons: [{type: 'ok'}]
+                });
+                
                 tg.sendData(`Куплен товар ID: ${id}`);
             } else {
-                tg.showAlert("Недостаточно вбаксов!");
+                tg.showAlert(translations[currentLang].noMoney);
             }
         }
 
+        // Таймер до обновления магазина Fortnite (03:00 по МСК)
         function updateTimer() {
             const now = new Date();
             let target = new Date();
-            target.setHours(12, 0, 0, 0);
+            
+            // Устанавливаем время обновления: 03:00 по Москве
+            // (Если у тебя другой часовой пояс, поменяй 3 на нужный час)
+            target.setHours(3, 0, 0, 0); 
 
+            // Если сейчас уже больше 03:00, значит таймер идет до 03:00 следующего дня
             if (now > target) {
                 target.setDate(target.getDate() + 1);
             }
@@ -22,9 +361,11 @@ userBalance -= price;
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+            const prefix = translations[currentLang].timerPrefix;
             document.getElementById('timer-text').innerText = 
-                `До обновления: ${hours}ч ${minutes}м ${seconds}с`;
-
+                `${prefix}${hours}ч ${minutes}м ${seconds}с`;
+                
+            // Когда таймер дойдет до нуля, магазин просто обновится (перерисуется)
             if (diff <= 0) {
                 renderShop(); 
                 updateTimer();
@@ -37,4 +378,3 @@ userBalance -= price;
     </script>
 </body>
 </html>
-                
