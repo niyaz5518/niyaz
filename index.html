@@ -146,9 +146,8 @@
             transform: scale(0.98);
         }
 
-        /* --- СТИЛИ ДЛЯ КОРЗИНЫ И ПРОФИЛЯ --- */
         .page-view {
-            display: none; /* По умолчанию скрыты */
+            display: none;
             padding: 15px;
             flex-direction: column;
         }
@@ -166,6 +165,7 @@
             color: #64748b;
             margin-top: 50px;
             font-size: 16px;
+            grid-column: span 2;
         }
         .cart-item {
             display: flex;
@@ -215,33 +215,29 @@
 
     <div class="timer-bar" id="timer-text">Загрузка...</div>
 
-    <!-- СТРАНИЦА 1: МАГАЗИН -->
+    <!-- МАГАЗИН -->
     <div id="view-shop" class="page-view active">
         <div class="shop-grid" id="shop-container">
-            <div class="empty-message" style="grid-column: span 2;">Загрузка скинов...</div>
+            <div class="empty-message">Загрузка скинов...</div>
         </div>
     </div>
 
-    <!-- СТРАНИЦА 2: КОРЗИНА -->
+    <!-- КОРЗИНА -->
     <div id="view-cart" class="page-view">
         <div class="page-title">Ваши покупки</div>
         <div id="cart-container"></div>
     </div>
 
-    <!-- СТРАНИЦА 3: ПРОФИЛЬ -->
+    <!-- ПРОФИЛЬ -->
     <div id="view-profile" class="page-view">
         <div class="page-title">Профиль</div>
         <div class="cart-item">
             <span>Ваш баланс:</span>
-            <strong id="profile-balance">0 V-Bucks</strong>
-        </div>
-        <div class="cart-item">
-            <span>Статус:</span>
-            <strong style="color: var(--balance-bg);">VIP Игрок</strong>
+            <strong id="profile-balance" style="color: var(--balance-bg);">0 V-Bucks</strong>
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ -->
+    <!-- МЕНЮ -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('shop')">🏠</div>
         <div class="nav-item" onclick="switchTab('cart')">🛒</div>
@@ -254,51 +250,32 @@
         tg.expand();
 
         const translations = {
-            ru: { timerPrefix: "Обновление магазина через: ", buyBtn: "Купить", success: "Успешно куплено!" },
-            en: { timerPrefix: "Shop updates in: ", buyBtn: "Buy", success: "Successfully purchased!" }
+            ru: { timerPrefix: "Обновление магазина через: ", buyBtn: "Купить", success: "Успешно куплено!", noMoney: "Недостаточно вбаксов!" },
+            en: { timerPrefix: "Shop updates in: ", buyBtn: "Buy", success: "Successfully purchased!", noMoney: "Not enough V-Bucks!" }
         };
 
         let currentLang = 'ru';
         let userBalance = parseInt(localStorage.getItem('vbucks')) || 1200;
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        // ==========================================
-        // ⚙️ НАСТРОЙКИ (МОЖНО МЕНЯТЬ ЗДЕСЬ)
-        // ==========================================
-        // Количество товаров, которые нужно загрузить из API
-        const ITEMS_TO_LOAD = 20; 
-        
-        // Мы задаем цены по кругу (если товаров больше, чем цен, они повторяются)
-        const priceList = [
-            { priceV: 800, priceRub: 780 },  // Цена для 1-го товара
-            { priceV: 500, priceRub: 490 },  // Цена для 2-го
-            { priceV: 200, priceRub: 190 },  // Цена для 3-го
-            { priceV: 1200, priceRub: 1100 },// Цена для 4-го
-            { priceV: 400, priceRub: 380 },  // Цена для 5-го
-            { priceV: 900, priceRub: 850 },  // Цена для 6-го
-            { priceV: 1500, priceRub: 1400 },// Цена для 7-го (БУДЕТ СКРЫТ)
-            { priceV: 100, priceRub: 90 }    // Цена для 8-го
-        ];
+        // --- КАК МНОГО ТОВАРОВ ПОКАЗЫВАТЬ ---
+        const ITEMS_TO_LOAD = 40; // Загружаем 40 скинов (можешь поставить 100)
 
         // --- ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ---
         function switchTab(tabName) {
-            // Скрываем все страницы
             document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
-            // Убираем активный класс со всех иконок
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
 
-            // Показываем нужную
             document.getElementById('view-' + tabName).classList.add('active');
             
-            // Подсвечиваем нужную иконку (находим ее по порядку)
             if (tabName === 'shop') document.querySelectorAll('.nav-item')[0].classList.add('active');
             if (tabName === 'cart') {
                 document.querySelectorAll('.nav-item')[1].classList.add('active');
-                renderCart(); // Обновляем корзину при открытии
+                renderCart();
             }
             if (tabName === 'profile') {
                 document.querySelectorAll('.nav-item')[2].classList.add('active');
-                document.getElementById('profile-balance').innerText = userBalance + ' V-Bucks'; // Обновляем баланс
+                document.getElementById('profile-balance').innerText = userBalance + ' V-Bucks';
             }
         }
 
@@ -312,14 +289,11 @@
                 container.innerHTML = '';
 
                 const skins = data.data.slice(0, ITEMS_TO_LOAD);
-                let displayCount = 0;
 
-                skins.forEach((skin, index) => {
-                    // Берем цену по кругу (если товаров больше, чем цен)
-                    const price = priceList[index % priceList.length];
-
-                    // ФИЛЬТР: Если цена больше 1200, мы ПРОПУСКАЕМ этот товар
-                    if (price.priceV > 1200) return;
+                skins.forEach((skin) => {
+                    // ГЕНЕРАЦИЯ ЦЕНЫ: Случайное число от 100 до 1200, кратное 100
+                    const priceV = Math.floor(Math.random() * 12 + 1) * 100; 
+                    const priceRub = Math.floor(priceV * 0.95); // Рубли по курсу ~0.95
 
                     const card = document.createElement('div');
                     card.className = 'item-card';
@@ -333,23 +307,18 @@
                             <div>
                                 <div class="item-name">${skinName}</div>
                                 <div class="item-price-row">
-                                    <span class="item-price-v">${price.priceV} V-Bucks</span>
-                                    <span class="item-price-rub">~ ${price.priceRub} ₽</span>
+                                    <span class="item-price-v">${priceV} V-Bucks</span>
+                                    <span class="item-price-rub">~ ${priceRub} ₽</span>
                                 </div>
                             </div>
-                            <button class="buy-btn" onclick="buyItem('${skinName}', ${price.priceV}, '${imageUrl}')">${buyText}</button>
+                            <button class="buy-btn" onclick="buyItem('${skinName}', ${priceV}, '${imageUrl}')">${buyText}</button>
                         </div>
                     `;
                     container.appendChild(card);
-                    displayCount++;
                 });
 
-                if(displayCount === 0) {
-                    container.innerHTML = '<div class="empty-message" style="grid-column: span 2;">Нет товаров до 1200 V-Bucks</div>';
-                }
-
             } catch (error) {
-                document.getElementById('shop-container').innerHTML = '<div class="empty-message" style="grid-column: span 2;">Ошибка загрузки</div>';
+                document.getElementById('shop-container').innerHTML = '<div class="empty-message">Ошибка загрузки магазина</div>';
             }
         }
 
@@ -359,7 +328,6 @@
                 userBalance -= price;
                 localStorage.setItem('vbucks', userBalance);
                 
-                // Добавляем в корзину
                 cart.push({ name: name, price: price, image: image });
                 localStorage.setItem('cart', JSON.stringify(cart));
 
@@ -370,11 +338,11 @@
                 });
                 tg.sendData(`Куплен: ${name}`);
             } else {
-                tg.showAlert("Недостаточно вбаксов!");
+                tg.showAlert(translations[currentLang].noMoney);
             }
         }
 
-        // --- ОТРИСОВКА КОРЗИНЫ ---
+        // --- КОРЗИНА ---
         function renderCart() {
             const container = document.getElementById('cart-container');
             container.innerHTML = '';
@@ -384,7 +352,7 @@
                 return;
             }
 
-            cart.forEach((item, index) => {
+            cart.forEach((item) => {
                 const div = document.createElement('div');
                 div.className = 'cart-item';
                 div.innerHTML = `
