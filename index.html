@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Niyaz Store</title>
+    <title>FORTNITE STORE</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -106,12 +106,18 @@
         }
         .item-image {
             width: 100%;
-            height: 100px;
+            height: 120px;
             background: linear-gradient(135deg, #3b82f6, var(--accent-color));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .item-image img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain;
         }
         .item-details {
             padding: 10px;
@@ -121,7 +127,7 @@
             justify-content: space-between;
         }
         .item-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             margin-bottom: 5px;
         }
@@ -131,7 +137,7 @@
             margin-bottom: 8px;
         }
         .item-price-v {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--balance-bg);
             font-weight: bold;
         }
@@ -143,11 +149,12 @@
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 8px;
+            padding: 6px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
+            font-size: 13px;
             transition: 0.2s;
         }
         .buy-btn:active {
@@ -182,7 +189,7 @@
 <body>
 
     <div class="header">
-        <h1 class="store-name" id="ui-store-name">Магазин Нияза</h1>
+        <h1 class="store-name" id="ui-store-name">FORTNITE STORE</h1>
         <div class="lang-switch">
             <button class="lang-btn active" onclick="setLang('ru')">RU</button>
             <button class="lang-btn" onclick="setLang('en')">EN</button>
@@ -205,77 +212,15 @@
         tg.ready();
         tg.expand();
 
-        // ==========================================
-        // ⚙️ НАСТРОЙКИ МАГАЗИНА (РЕДАКТИРУЙ ЗДЕСЬ!)
-        // ==========================================
-        // Чтобы добавить новый предмет, скопируй блок в фигурных скобках { ... },
-        // вставь его ниже и поменяй данные.
-        const shopItems = [
-            { 
-                id: 1, 
-                emoji: "🛡️", 
-                priceV: 800,  // Цена в В-баксах
-                priceRub: 780, // Цена в рублях
-                nameRu: "Скин 'Рыцарь'", 
-                nameEn: "Knight Skin" 
-            },
-            { 
-                id: 2, 
-                emoji: "🪓", 
-                priceV: 500, 
-                priceRub: 490, 
-                nameRu: "Кирка 'Дракон'", 
-                nameEn: "Dragon Pickaxe" 
-            },
-            { 
-                id: 3, 
-                emoji: "💃", 
-                priceV: 200, 
-                priceRub: 190, 
-                nameRu: "Танец 'Флоп'", 
-                nameEn: "Flop Dance" 
-            },
-            { 
-                id: 4, 
-                emoji: "😂", 
-                priceV: 100, 
-                priceRub: 90, 
-                nameRu: "Эмоция 'Смех'", 
-                nameEn: "Laugh Emote" 
-            },
-            { 
-                id: 5, 
-                emoji: "👻", 
-                priceV: 1200, 
-                priceRub: 1100, 
-                nameRu: "Скин 'Призрак'", 
-                nameEn: "Ghost Skin" 
-            }
-        ];
-        // ==========================================
-
-
-        // БАЗА ПЕРЕВОДОВ (кнопки и текст)
+        // --- ПЕРЕВОДЫ ---
         const translations = {
-            ru: {
-                storeName: "Магазин Нияза",
-                timerPrefix: "Обновление магазина через: ",
-                buyBtn: "Купить",
-                noMoney: "Недостаточно вбаксов!",
-                success: "Успешно куплено!"
-            },
-            en: {
-                storeName: "Niyaz's Store",
-                timerPrefix: "Shop updates in: ",
-                buyBtn: "Buy",
-                noMoney: "Not enough V-Bucks!",
-                success: "Successfully purchased!"
-            }
+            ru: { timerPrefix: "Обновление магазина через: ", buyBtn: "Купить", noMoney: "Недостаточно вбаксов!", success: "Успешно куплено!" },
+            en: { timerPrefix: "Shop updates in: ", buyBtn: "Buy", noMoney: "Not enough V-Bucks!", success: "Successfully purchased!" }
         };
 
         let currentLang = 'ru';
 
-        // Баланс
+        // --- БАЛАНС ---
         let userBalance = localStorage.getItem('vbucks');
         if (!userBalance) {
             userBalance = 1200;
@@ -283,23 +228,54 @@
         }
         document.getElementById('balance-display').innerText = userBalance + ' V';
 
-        // Смена языка
+        // ==========================================
+        // ⚙️ БАЗА ТОВАРОВ (ДОБАВЛЯЙ СЮДА)
+        // ==========================================
+        const allItems = [
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 800, priceRub: 780, nameRu: "Скин 'Рыцарь'", nameEn: "Knight Skin" },
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 500, priceRub: 490, nameRu: "Кирка 'Дракон'", nameEn: "Dragon Pickaxe" },
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 200, priceRub: 190, nameRu: "Танец 'Флоп'", nameEn: "Flop Dance" },
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 100, priceRub: 90, nameRu: "Эмоция 'Смех'", nameEn: "Laugh Emote" },
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 1200, priceRub: 1100, nameRu: "Скин 'Призрак'", nameEn: "Ghost Skin" },
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 1500, priceRub: 1400, nameRu: "Скин 'Легенда'", nameEn: "Legend Skin" }, // Он есть в базе, но мы его отфильтруем
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 400, priceRub: 380, nameRu: "Кирка 'Огонь'", nameEn: "Fire Pickaxe" },
+            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 900, priceRub: 850, nameRu: "Скин 'Ниндзя'", nameEn: "Ninja Skin" }
+        ];
+
+        // ФИЛЬТРАЦИЯ: Создаем новый массив, где ТОЛЬКО предметы до 1200 вбаксов
+        const itemsUnder1200 = allItems.filter(item => item.priceV <= 1200);
+
+        // Функция выбора товаров на сегодня
+        function getTodayItems() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            
+            const itemsToShow = [];
+            const itemsPerDay = 4; // Сколько товаров показывать на экране
+            
+            for (let i = 0; i < itemsPerDay; i++) {
+                // Ищем товары ТОЛЬКО в отфильтрованном массиве
+                const index = (dayOfYear + i) % itemsUnder1200.length;
+                itemsToShow.push(itemsUnder1200[index]);
+            }
+            return itemsToShow;
+        }
+
         function setLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            
-            document.getElementById('ui-store-name').innerText = translations[lang].storeName;
             renderShop();
             updateTimer();
         }
 
-        // Отрисовка
         function renderShop() {
             const container = document.getElementById('shop-container');
             container.innerHTML = '';
             
-            shopItems.forEach(item => {
+            const itemsToday = getTodayItems(); // Получаем 4 товара
+
+            itemsToday.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'item-card';
                 
@@ -307,7 +283,9 @@
                 const buyText = translations[currentLang].buyBtn;
 
                 card.innerHTML = `
-                    <div class="item-image">${item.emoji}</div>
+                    <div class="item-image">
+                        <img src="${item.image}" alt="${itemName}">
+                    </div>
                     <div class="item-details">
                         <div>
                             <div class="item-name">${itemName}</div>
@@ -316,15 +294,14 @@
                                 <span class="item-price-rub">~ ${item.priceRub} ₽</span>
                             </div>
                         </div>
-                        <button class="buy-btn" onclick="buyItem(${item.id}, ${item.priceV})">${buyText}</button>
+                        <button class="buy-btn" onclick="buyItem('${itemName}', ${item.priceV})">${buyText}</button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // Покупка
-        function buyItem(id, price) {
+        function buyItem(name, price) {
             if (userBalance >= price) {
                 userBalance -= price;
                 localStorage.setItem('vbucks', userBalance);
@@ -336,22 +313,17 @@
                     buttons: [{type: 'ok'}]
                 });
                 
-                tg.sendData(`Куплен товар ID: ${id}`);
+                tg.sendData(`Куплен: ${name}`);
             } else {
                 tg.showAlert(translations[currentLang].noMoney);
             }
         }
 
-        // Таймер до обновления магазина Fortnite (03:00 по МСК)
         function updateTimer() {
             const now = new Date();
             let target = new Date();
-            
-            // Устанавливаем время обновления: 03:00 по Москве
-            // (Если у тебя другой часовой пояс, поменяй 3 на нужный час)
             target.setHours(3, 0, 0, 0); 
 
-            // Если сейчас уже больше 03:00, значит таймер идет до 03:00 следующего дня
             if (now > target) {
                 target.setDate(target.getDate() + 1);
             }
@@ -365,13 +337,13 @@
             document.getElementById('timer-text').innerText = 
                 `${prefix}${hours}ч ${minutes}м ${seconds}с`;
                 
-            // Когда таймер дойдет до нуля, магазин просто обновится (перерисуется)
             if (diff <= 0) {
                 renderShop(); 
                 updateTimer();
             }
         }
 
+        // ЗАПУСК
         renderShop();
         setInterval(updateTimer, 1000);
         updateTimer();
