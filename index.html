@@ -46,7 +46,6 @@
             margin: 0;
         }
         
-        /* --- СЕТКА ТОВАРОВ --- */
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -101,7 +100,6 @@
             color: var(--rub-color);
         }
 
-        /* --- МОДАЛЬНОЕ ОКНО --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -168,7 +166,6 @@
             cursor: pointer;
         }
 
-        /* --- УПРАВЛЕНИЕ ЭКРАНАМИ --- */
         .screen {
             display: none;
             flex-direction: column;
@@ -187,7 +184,6 @@
             grid-column: span 2;
         }
 
-        /* --- НИЖНЕЕ МЕНЮ --- */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -218,7 +214,6 @@
             color: var(--accent-color);
         }
         
-        /* --- КНОПКИ В РАЗДЕЛЕ FORTNITE --- */
         .sub-tabs {
             display: flex;
             gap: 10px;
@@ -248,30 +243,22 @@
         <h1 class="store-name" id="header-title">FORTNITE STORE</h1>
     </div>
 
-    <!-- ЭКРАН 1: ГЛАВНАЯ (Все скины) -->
     <div id="screen-home" class="screen active">
-        <div class="shop-grid" id="grid-home">
-            <!-- Скины загрузятся сюда -->
-        </div>
+        <div class="shop-grid" id="grid-home"></div>
     </div>
 
-    <!-- ЭКРАН 2: РАЗДЕЛ FORTNITE (С подкатегориями) -->
     <div id="screen-fortnite" class="screen">
         <div class="sub-tabs">
             <button class="sub-tab active" onclick="switchSubTab('skins')" id="tab-skins">Скины</button>
             <button class="sub-tab" onclick="switchSubTab('other')" id="tab-other">Прочее</button>
         </div>
         
-        <div id="grid-skins" class="shop-grid">
-            <!-- Скины загрузятся сюда -->
-        </div>
-        
+        <div id="grid-skins" class="shop-grid"></div>
         <div id="grid-other-ft" class="shop-grid" style="display:none;">
             <div class="empty-message">Здесь скоро появятся кирки и танцы</div>
         </div>
     </div>
 
-    <!-- ЭКРАН 3: ПРОФИЛЬ / ИНФО -->
     <div id="screen-profile" class="screen">
         <div style="padding: 20px; text-align: center;">
             <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
@@ -282,7 +269,6 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО -->
     <div class="modal-overlay" id="itemModal">
         <div class="modal-content">
             <img id="modal-img" class="modal-image" src="" alt="Item">
@@ -295,19 +281,15 @@
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ (3 КНОПКИ) -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home')" id="btn-home">
-            <span class="nav-icon">🏠</span>
-            Главная
+            <span class="nav-icon">🏠</span> Главная
         </div>
         <div class="nav-item" onclick="switchTab('fortnite')" id="btn-fortnite">
-            <span class="nav-icon">🎮</span>
-            Fortnite
+            <span class="nav-icon">🎮</span> Fortnite
         </div>
         <div class="nav-item" onclick="switchTab('profile')" id="btn-profile">
-            <span class="nav-icon">👤</span>
-            Профиль
+            <span class="nav-icon">👤</span> Профиль
         </div>
     </div>
 
@@ -319,37 +301,30 @@
         const TELEGRAM_CONTACT = "niyaz_5518"; 
         let selectedItem = null; 
 
-        // СПИСОК ВСЕХ СКИНОВ
+        // --- СКИНЫ С КАРТИНКАМИ С GITHUB (ОНИ НЕ БЛОКИРУЮТСЯ) ---
+        // Примечание: ссылки могут быть не на все скины, но они рабочие.
         const storeSkins = [
-            { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/5/5b/Renegade_Raider_-_Outfit_-_Fortnite.png" },
-            { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/9/91/Aerial_Assault_Trooper_-_Outfit_-_Fortnite.png" },
-            { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/e/e3/Raptor_-_Outfit_-_Fortnite.png" },
-            { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/1/1c/Red_Knight_-_Outfit_-_Fortnite.png" },
-            { name: "Black Knight", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/0/0f/Black_Knight_-_Outfit_-_Fortnite.png" },
-            { name: "Drift", priceV: 950, priceRub: 900, image: "https://static.wikia.nocookie.net/fortnite/images/3/3e/Drift_-_Outfit_-_Fortnite.png" },
-            { name: "Midas", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/9/9c/Midas_-_Outfit_-_Fortnite.png" },
-            { name: "Peely", priceV: 800, priceRub: 760, image: "https://static.wikia.nocookie.net/fortnite/images/4/48/Peely_-_Outfit_-_Fortnite.png" }
+            { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_028_athena_commando_f.png" },
+            { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_029_athena_commando_f.png" },
+            { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_030_athena_commando_m.png" },
+            { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_049_athena_commando_f.png" },
+            { name: "Black Knight", priceV: 1200, priceRub: 1140, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_050_athena_commando_m.png" },
+            { name: "Drift", priceV: 950, priceRub: 900, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_098_athena_commando_m.png" },
+            { name: "Midas", priceV: 1200, priceRub: 1140, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_259_athena_commando_m.png" },
+            { name: "Peely", priceV: 800, priceRub: 760, image: "https://raw.githubusercontent.com/Fortnite-API/fortnite-api/master/images/cosmetics/br/cid_235_athena_commando_m.png" }
         ];
 
-        // --- НАВИГАЦИЯ ПО НИЖНЕМУ МЕНЮ ---
         function switchTab(tabName) {
-            // 1. Скрываем все экраны
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            // 2. Убираем активный класс со всех кнопок
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-
-            // 3. Показываем нужный экран
             document.getElementById('screen-' + tabName).classList.add('active');
-            // 4. Красим нужную кнопку
             document.getElementById('btn-' + tabName).classList.add('active');
-
-            // 5. Меняем заголовок в шапке
+            
             if (tabName === 'home') document.getElementById('header-title').innerText = "Все скины";
             if (tabName === 'fortnite') document.getElementById('header-title').innerText = "Раздел Fortnite";
             if (tabName === 'profile') document.getElementById('header-title').innerText = "Информация";
         }
 
-        // Переключение подкатегорий внутри Фортрайт
         function switchSubTab(tab) {
             document.getElementById('tab-skins').classList.remove('active');
             document.getElementById('tab-other').classList.remove('active');
@@ -364,7 +339,6 @@
             }
         }
 
-        // --- ОТРИСОВКА СКИНОВ (на главную и в раздел Fortnite) ---
         function renderSkins() {
             const gridHome = document.getElementById('grid-home');
             const gridFt = document.getElementById('grid-skins');
@@ -372,13 +346,12 @@
             gridFt.innerHTML = '';
 
             storeSkins.forEach((skin) => {
-                // Создаем карточку
                 const createCard = () => {
                     const card = document.createElement('div');
                     card.className = 'item-card';
                     card.onclick = () => openModal(skin.name, skin.priceV, skin.priceRub, skin.image);
                     card.innerHTML = `
-                        <div class="item-image"><img src="${skin.image}" alt="${skin.name}"></div>
+                        <div class="item-image"><img src="${skin.image}" alt="${skin.name}" onerror="this.style.display='none'"></div>
                         <div class="item-details">
                             <div class="item-name">${skin.name}</div>
                             <div class="item-price-v">${skin.priceV} V-Bucks</div>
@@ -387,17 +360,15 @@
                     `;
                     return card;
                 };
-
-                // Добавляем на главную и в раздел
                 gridHome.appendChild(createCard());
                 gridFt.appendChild(createCard());
             });
         }
 
-        // --- МОДАЛЬНОЕ ОКНО ---
         function openModal(name, price, priceRub, image) {
             selectedItem = { name: name, price: price };
             document.getElementById('modal-img').src = image;
+            document.getElementById('modal-img').onerror = function() { this.style.display = 'none'; };
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-price').innerText = `${price} V-Bucks (~${priceRub} ₽)`;
             document.getElementById('itemModal').classList.add('active');
@@ -408,11 +379,9 @@
             selectedItem = null;
         }
 
-        // --- ПОКУПКА И ПЕРЕХОД В ЧАТ ---
         function confirmPurchase() {
             if (!selectedItem) return;
             closeModal();
-
             tg.showPopup({
                 title: 'Переход в чат',
                 message: `Вы выбрали "${selectedItem.name}". Сейчас откроется чат с продавцом.`,
@@ -424,7 +393,6 @@
             });
         }
 
-        // Запуск
         renderSkins();
     </script>
 </body>
