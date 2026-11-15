@@ -47,15 +47,7 @@
             color: var(--accent-color);
             margin: 0;
         }
-        .balance-box {
-            background: var(--balance-bg);
-            color: var(--balance-text);
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
+        /* Кнопка языка */
         .lang-switch {
             display: flex;
             background: #0f172a;
@@ -161,6 +153,14 @@
             background: var(--accent-hover);
             transform: scale(0.98);
         }
+        
+        .loader {
+            text-align: center;
+            color: #94a3b8;
+            grid-column: span 2;
+            padding: 40px 0;
+            font-size: 14px;
+        }
 
         .bottom-nav {
             position: fixed;
@@ -194,12 +194,13 @@
             <button class="lang-btn active" onclick="setLang('ru')">RU</button>
             <button class="lang-btn" onclick="setLang('en')">EN</button>
         </div>
-        <div class="balance-box" id="balance-display">1200 V</div>
     </div>
 
     <div class="timer-bar" id="timer-text">Загрузка...</div>
 
-    <div class="shop-grid" id="shop-container"></div>
+    <div class="shop-grid" id="shop-container">
+        <div class="loader">Загрузка скинов...</div>
+    </div>
 
     <div class="bottom-nav">
         <div class="nav-item active">🏠</div>
@@ -212,113 +213,107 @@
         tg.ready();
         tg.expand();
 
-        // --- ПЕРЕВОДЫ ---
         const translations = {
-            ru: { timerPrefix: "Обновление магазина через: ", buyBtn: "Купить", noMoney: "Недостаточно вбаксов!", success: "Успешно куплено!" },
-            en: { timerPrefix: "Shop updates in: ", buyBtn: "Buy", noMoney: "Not enough V-Bucks!", success: "Successfully purchased!" }
+            ru: { timerPrefix: "Обновление магазина через: ", buyBtn: "Купить", success: "Успешно куплено!" },
+            en: { timerPrefix: "Shop updates in: ", buyBtn: "Buy", success: "Successfully purchased!" }
         };
 
         let currentLang = 'ru';
-
-        // --- БАЛАНС ---
-        let userBalance = localStorage.getItem('vbucks');
-        if (!userBalance) {
-            userBalance = 1200;
-            localStorage.setItem('vbucks', userBalance);
-        }
-        document.getElementById('balance-display').innerText = userBalance + ' V';
+        let userBalance = 1200; // Баланс просто для логики покупки
 
         // ==========================================
-        // ⚙️ БАЗА ТОВАРОВ (ДОБАВЛЯЙ СЮДА)
+        // ⚙️ НАСТРОЙКИ ЦЕН (ТЫ МЕНЯЕШЬ ЗДЕСЬ)
         // ==========================================
-        const allItems = [
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 800, priceRub: 780, nameRu: "Скин 'Рыцарь'", nameEn: "Knight Skin" },
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 500, priceRub: 490, nameRu: "Кирка 'Дракон'", nameEn: "Dragon Pickaxe" },
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 200, priceRub: 190, nameRu: "Танец 'Флоп'", nameEn: "Flop Dance" },
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 100, priceRub: 90, nameRu: "Эмоция 'Смех'", nameEn: "Laugh Emote" },
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 1200, priceRub: 1100, nameRu: "Скин 'Призрак'", nameEn: "Ghost Skin" },
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 1500, priceRub: 1400, nameRu: "Скин 'Легенда'", nameEn: "Legend Skin" }, // Он есть в базе, но мы его отфильтруем
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 400, priceRub: 380, nameRu: "Кирка 'Огонь'", nameEn: "Fire Pickaxe" },
-            { image: "https://i.imgur.com/8QO9y5W.png", priceV: 900, priceRub: 850, nameRu: "Скин 'Ниндзя'", nameEn: "Ninja Skin" }
+        // Так как API не всегда отдает цены в V-Bucks, мы задаем их сами.
+        // Картинки и названия будут браться из API.
+        const priceSettings = [
+            { priceV: 800, priceRub: 780 },
+            { priceV: 500, priceRub: 490 },
+            { priceV: 200, priceRub: 190 },
+            { priceV: 100, priceRub: 90 },
+            { priceV: 1200, priceRub: 1100 },
+            { priceV: 400, priceRub: 380 },
+            { priceV: 900, priceRub: 850 }
         ];
 
-        // ФИЛЬТРАЦИЯ: Создаем новый массив, где ТОЛЬКО предметы до 1200 вбаксов
-        const itemsUnder1200 = allItems.filter(item => item.priceV <= 1200);
+        // --- ЗАГРУЗКА ДАННЫХ ИЗ FORTNITE-API ---
+        async function fetchFortniteSkins() {
+            try {
+                // Запрашиваем список косметики (скины)
+                const response = await fetch('https://fortnite-api.com/v2/cosmetics/br');
+                const data = await response.json();
+                
+                const container = document.getElementById('shop-container');
+                container.innerHTML = '';
 
-        // Функция выбора товаров на сегодня
-        function getTodayItems() {
-            const today = new Date();
-            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-            
-            const itemsToShow = [];
-            const itemsPerDay = 4; // Сколько товаров показывать на экране
-            
-            for (let i = 0; i < itemsPerDay; i++) {
-                // Ищем товары ТОЛЬКО в отфильтрованном массиве
-                const index = (dayOfYear + i) % itemsUnder1200.length;
-                itemsToShow.push(itemsUnder1200[index]);
+                // Берем первые 7 скинов из ответа API
+                const skins = data.data.slice(0, 7);
+
+                skins.forEach((skin, index) => {
+                    // Если для этого слота нет настроек цены, пропускаем
+                    if (!priceSettings[index]) return;
+
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    
+                    // Берем картинку и имя из API
+                    const imageUrl = skin.images.icon;
+                    const skinName = skin.name;
+                    
+                    const price = priceSettings[index];
+                    const buyText = translations[currentLang].buyBtn;
+
+                    card.innerHTML = `
+                        <div class="item-image">
+                            <img src="${imageUrl}" alt="${skinName}">
+                        </div>
+                        <div class="item-details">
+                            <div>
+                                <div class="item-name">${skinName}</div>
+                                <div class="item-price-row">
+                                    <span class="item-price-v">${price.priceV} V-Bucks</span>
+                                    <span class="item-price-rub">~ ${price.priceRub} ₽</span>
+                                </div>
+                            </div>
+                            <button class="buy-btn" onclick="buyItem('${skinName}', ${price.priceV})">${buyText}</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Ошибка API:", error);
+                document.getElementById('shop-container').innerHTML = '<div class="loader">Не удалось загрузить магазин. Попробуйте позже.</div>';
             }
-            return itemsToShow;
         }
 
+        // --- СМЕНА ЯЗЫКА ---
         function setLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            renderShop();
-            updateTimer();
-        }
-
-        function renderShop() {
-            const container = document.getElementById('shop-container');
-            container.innerHTML = '';
             
-            const itemsToday = getTodayItems(); // Получаем 4 товара
-
-            itemsToday.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                
-                const itemName = currentLang === 'ru' ? item.nameRu : item.nameEn;
-                const buyText = translations[currentLang].buyBtn;
-
-                card.innerHTML = `
-                    <div class="item-image">
-                        <img src="${item.image}" alt="${itemName}">
-                    </div>
-                    <div class="item-details">
-                        <div>
-                            <div class="item-name">${itemName}</div>
-                            <div class="item-price-row">
-                                <span class="item-price-v">${item.priceV} V-Bucks</span>
-                                <span class="item-price-rub">~ ${item.priceRub} ₽</span>
-                            </div>
-                        </div>
-                        <button class="buy-btn" onclick="buyItem('${itemName}', ${item.priceV})">${buyText}</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+            // Названия скинов из API часто только на английском, 
+            // но кнопки и таймер переведутся.
+            updateTimer(); 
         }
 
+        // --- ПОКУПКА ---
         function buyItem(name, price) {
             if (userBalance >= price) {
                 userBalance -= price;
-                localStorage.setItem('vbucks', userBalance);
-                document.getElementById('balance-display').innerText = userBalance + ' V';
-                
                 tg.showPopup({
                     title: '✔️',
                     message: translations[currentLang].success,
                     buttons: [{type: 'ok'}]
                 });
-                
                 tg.sendData(`Куплен: ${name}`);
             } else {
                 tg.showAlert(translations[currentLang].noMoney);
             }
         }
 
+        // --- ТАЙМЕР ---
         function updateTimer() {
             const now = new Date();
             let target = new Date();
@@ -336,15 +331,10 @@
             const prefix = translations[currentLang].timerPrefix;
             document.getElementById('timer-text').innerText = 
                 `${prefix}${hours}ч ${minutes}м ${seconds}с`;
-                
-            if (diff <= 0) {
-                renderShop(); 
-                updateTimer();
-            }
         }
 
         // ЗАПУСК
-        renderShop();
+        fetchFortniteSkins(); // Загружаем скины из API
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
