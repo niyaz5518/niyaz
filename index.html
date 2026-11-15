@@ -46,7 +46,7 @@
             margin: 0;
         }
 
-        /* --- ГЛАВНЫЙ ЭКРАН С КАТЕГОРИЯМИ --- */
+        /* Главное меню */
         .main-menu {
             padding: 20px;
             display: flex;
@@ -65,18 +65,10 @@
         .category-card:active {
             transform: scale(0.97);
         }
-        .category-card h2 {
-            margin: 0;
-            font-size: 22px;
-            color: var(--text-color);
-        }
-        .category-card p {
-            margin: 5px 0 0 0;
-            color: #94a3b8;
-            font-size: 13px;
-        }
+        .category-card h2 { margin: 0; font-size: 22px; color: var(--text-color); }
+        .category-card p { margin: 5px 0 0 0; color: #94a3b8; font-size: 13px; }
         
-        /* --- СЕТКА ТОВАРОВ --- */
+        /* Сетка товаров */
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -93,9 +85,7 @@
             cursor: pointer;
             transition: transform 0.1s;
         }
-        .item-card:active {
-            transform: scale(0.97);
-        }
+        .item-card:active { transform: scale(0.97); }
         .item-image {
             width: 100%;
             height: 120px;
@@ -116,22 +106,11 @@
             display: flex;
             flex-direction: column;
         }
-        .item-name {
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .item-price-v {
-            font-size: 12px;
-            color: #2dd4bf;
-            font-weight: bold;
-        }
-        .item-price-rub {
-            font-size: 11px;
-            color: var(--rub-color);
-        }
+        .item-name { font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+        .item-price-v { font-size: 12px; color: #2dd4bf; font-weight: bold; }
+        .item-price-rub { font-size: 11px; color: var(--rub-color); }
 
-        /* --- МОДАЛЬНОЕ ОКНО --- */
+        /* Модальное окно */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -142,9 +121,7 @@
             align-items: center;
             padding: 20px;
         }
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
         .modal-content {
             background: var(--card-bg);
             border-radius: 20px;
@@ -161,22 +138,9 @@
             object-fit: contain;
             margin-bottom: 15px;
         }
-        .modal-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .modal-price {
-            font-size: 18px;
-            color: #2dd4bf;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .modal-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+        .modal-price { font-size: 18px; color: #2dd4bf; font-weight: bold; margin-bottom: 20px; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
         .btn-buy {
             background: var(--accent-color);
             color: white;
@@ -198,32 +162,31 @@
             cursor: pointer;
         }
 
-        /* --- УПРАВЛЕНИЕ ЭКРАНАМИ --- */
+        /* Экраны */
         .screen {
             display: none;
             flex-direction: column;
             flex-grow: 1;
             overflow-y: auto;
         }
-        .screen.active {
-            display: flex;
-        }
+        .screen.active { display: flex; }
 
         .sub-tabs {
             display: flex;
             gap: 10px;
             padding: 15px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         .sub-tab {
             background: var(--card-bg);
             color: #94a3b8;
             border: 1px solid var(--border-color);
-            padding: 8px 20px;
+            padding: 8px 15px;
             border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
         .sub-tab.active {
             background: var(--accent-color);
@@ -239,7 +202,7 @@
             grid-column: span 2;
         }
 
-        /* --- НИЖНЕЕ МЕНЮ (ТЕПЕРЬ ТОЛЬКО 2 КНОПКИ) --- */
+        /* Нижнее меню */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -260,15 +223,10 @@
             font-size: 12px;
             padding: 5px 10px;
             transition: 0.2s;
-            width: 45%; /* Увеличили ширину, так как кнопок стало 2 */
+            width: 45%;
         }
-        .nav-icon {
-            font-size: 22px;
-            margin-bottom: 3px;
-        }
-        .nav-item.active {
-            color: var(--accent-color);
-        }
+        .nav-icon { font-size: 22px; margin-bottom: 3px; }
+        .nav-item.active { color: var(--accent-color); }
     </style>
 </head>
 <body>
@@ -277,36 +235,38 @@
         <h1 class="store-name" id="header-title">FORTNITE STORE</h1>
     </div>
 
-    <!-- ЭКРАН 1: ГЛАВНАЯ (КАТЕГОРИИ) -->
+    <!-- ГЛАВНАЯ -->
     <div id="screen-home" class="screen active">
         <div class="main-menu">
             <div class="category-card" onclick="openCategory('fortnite')">
                 <h2>Fortnite</h2>
-                <p>Скины и другие предметы</p>
+                <p>Все предметы из игры</p>
             </div>
-            <!-- Сюда потом можно добавить другие категории -->
         </div>
     </div>
 
-    <!-- ЭКРАН 2: РАЗДЕЛ FORTNITE -->
+    <!-- РАЗДЕЛ FORTNITE -->
     <div id="screen-fortnite" class="screen">
         <div class="sub-tabs">
             <button class="sub-tab active" onclick="switchSubTab('skins')" id="tab-skins">Скины</button>
-            <button class="sub-tab" onclick="switchSubTab('other')" id="tab-other">Прочее</button>
+            <button class="sub-tab" onclick="switchSubTab('pickaxes')" id="tab-pickaxes">Кирки</button>
+            <button class="sub-tab" onclick="switchSubTab('emotes')" id="tab-emotes">Эмоции</button>
+            <button class="sub-tab" onclick="switchSubTab('pets')" id="tab-pets">Питомцы</button>
         </div>
         
+        <!-- Сетки товаров -->
         <div id="grid-skins" class="shop-grid"></div>
-        <div id="grid-other-ft" class="shop-grid" style="display:none;">
-            <div class="empty-message">Здесь скоро появятся кирки и танцы</div>
-        </div>
+        <div id="grid-pickaxes" class="shop-grid" style="display:none;"></div>
+        <div id="grid-emotes" class="shop-grid" style="display:none;"></div>
+        <div id="grid-pets" class="shop-grid" style="display:none;"></div>
     </div>
 
-    <!-- ЭКРАН 3: ПРОФИЛЬ -->
+    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
         <div style="padding: 20px; text-align: center;">
             <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
                 <h3 style="margin-top:0; color: var(--accent-color);">FORTNITE STORE</h3>
-                <p style="color: #94a3b8;">Добро пожаловать! Выберите скин и нажмите «Купить».</p>
+                <p style="color: #94a3b8;">Добро пожаловать! Выберите предмет и нажмите «Купить».</p>
                 <a href="https://t.me/niyaz_5518" target="_blank" style="display:inline-block; margin-top:15px; background:var(--accent-color); color:white; text-decoration:none; padding:10px 20px; border-radius:8px; font-weight:bold;">Написать нам</a>
             </div>
         </div>
@@ -325,7 +285,7 @@
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ (ТОЛЬКО 2 КНОПКИ) -->
+    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home')" id="btn-home">
             <span class="nav-icon">🏠</span> Главная
@@ -343,20 +303,40 @@
         const TELEGRAM_CONTACT = "niyaz_5518"; 
         let selectedItem = null; 
 
-        // --- СКИНЫ (Ссылки на картинки с добавленным параметром ?) ---
-        // Параметр "?" в конце ссылки заставляет браузер скачать картинку заново, обходя кэш.
-        const storeSkins = [
-            { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_028_athena_commando_f.png?" },
-            { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f.png?" },
-            { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_030_athena_commando_m.png?" },
-            { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_049_athena_commando_f.png?" },
-            { name: "Black Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_050_athena_commando_m.png?" },
-            { name: "Drift", priceV: 950, priceRub: 900, image: "https://fortnite-api.com/images/cosmetics/br/cid_098_athena_commando_m.png?" },
-            { name: "Midas", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_259_athena_commando_m.png?" },
-            { name: "Peely", priceV: 800, priceRub: 760, image: "https://fortnite-api.com/images/cosmetics/br/cid_235_athena_commando_m.png?" }
-        ];
+        // --- ФУНКЦИЯ ДЛЯ ОБХОДА БЛОКИРОВКИ КАРТИНОК ---
+        // Она заставляет картинку загружаться через надежный прокси-сервер
+        const proxyImg = (url) => `https://images.weserv.nl/?url=${encodeURIComponent(url)}`;
 
-        // --- НАВИГАЦИЯ ПО НИЖНЕМУ МЕНЮ ---
+        // --- БАЗА ТОВАРОВ ---
+        const items = {
+            skins: [
+                { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_028_athena_commando_f.png" },
+                { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f.png" },
+                { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_030_athena_commando_m.png" },
+                { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_049_athena_commando_f.png" },
+                { name: "Black Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_050_athena_commando_m.png" },
+                { name: "Drift", priceV: 950, priceRub: 900, image: "https://fortnite-api.com/images/cosmetics/br/cid_098_athena_commando_m.png" }
+            ],
+            pickaxes: [
+                { name: "Default Pickaxe", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_001_default.png" },
+                { name: "Raider's Revenge", priceV: 800, priceRub: 760, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_021_raider.png" },
+                { name: "Rainbow Smash", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_028_rainbow.png" },
+                { name: "Star Wand", priceV: 800, priceRub: 760, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_012_starwand.png" }
+            ],
+            emotes: [
+                { name: "Floss", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_floss.png" },
+                { name: "Best Mates", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_bestmates.png" },
+                { name: "Orange Justice", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_orangejustice.png" },
+                { name: "Take The L", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_takethel.png" }
+            ],
+            pets: [
+                { name: "Bonesy", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_001_bonesy.png" },
+                { name: "Camo", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_002_camo.png" },
+                { name: "Gunmetal", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_003_gunmetal.png" },
+                { name: "Chihuahua", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_014_chihuahua.png" }
+            ]
+        };
+
         function switchTab(tabName) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -367,57 +347,57 @@
             if (tabName === 'profile') document.getElementById('header-title').innerText = "Информация";
         }
 
-        // --- ОТКРЫТИЕ КАТЕГОРИИ ---
         function openCategory(category) {
             if (category === 'fortnite') {
-                // Переключаем экран
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
                 document.getElementById('screen-fortnite').classList.add('active');
-                // Убираем активную кнопку с "Главная", так как мы внутри категории
                 document.getElementById('btn-home').classList.remove('active');
-                
                 document.getElementById('header-title').innerText = "Раздел Fortnite";
-                renderSkins();
+                
+                // Рендерим все вкладки один раз при входе
+                renderCategory('skins', items.skins);
+                renderCategory('pickaxes', items.pickaxes);
+                renderCategory('emotes', items.emotes);
+                renderCategory('pets', items.pets);
             }
         }
 
         function switchSubTab(tab) {
-            document.getElementById('tab-skins').classList.remove('active');
-            document.getElementById('tab-other').classList.remove('active');
+            document.querySelectorAll('.sub-tab').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tab-' + tab).classList.add('active');
 
-            if (tab === 'skins') {
-                document.getElementById('grid-skins').style.display = 'grid';
-                document.getElementById('grid-other-ft').style.display = 'none';
-            } else {
-                document.getElementById('grid-skins').style.display = 'none';
-                document.getElementById('grid-other-ft').style.display = 'grid';
-            }
+            document.querySelectorAll('.shop-grid').forEach(grid => grid.style.display = 'none');
+            document.getElementById('grid-' + tab).style.display = 'grid';
         }
 
-        function renderSkins() {
-            const gridFt = document.getElementById('grid-skins');
-            gridFt.innerHTML = '';
+        function renderCategory(categoryId, itemsList) {
+            const grid = document.getElementById('grid-' + categoryId);
+            grid.innerHTML = '';
 
-            storeSkins.forEach((skin) => {
+            itemsList.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'item-card';
-                card.onclick = () => openModal(skin.name, skin.priceV, skin.priceRub, skin.image);
+                card.onclick = () => openModal(item.name, item.priceV, item.priceRub, item.image);
+                
+                // ИСПОЛЬЗУЕМ ПРОКСИ ДЛЯ КАРТИНОК
+                const safeImage = proxyImg(item.image);
+                
                 card.innerHTML = `
-                    <div class="item-image"><img src="${skin.image}" alt="${skin.name}" onerror="this.style.display='none'"></div>
+                    <div class="item-image"><img src="${safeImage}" alt="${item.name}" onerror="this.style.display='none'"></div>
                     <div class="item-details">
-                        <div class="item-name">${skin.name}</div>
-                        <div class="item-price-v">${skin.priceV} V-Bucks</div>
-                        <div class="item-price-rub">~ ${skin.priceRub} ₽</div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price-v">${item.priceV} V-Bucks</div>
+                        <div class="item-price-rub">~ ${item.priceRub} ₽</div>
                     </div>
                 `;
-                gridFt.appendChild(card);
+                grid.appendChild(card);
             });
         }
 
         function openModal(name, price, priceRub, image) {
             selectedItem = { name: name, price: price };
-            document.getElementById('modal-img').src = image;
+            // Прокси для большой картинки в модальном окне
+            document.getElementById('modal-img').src = proxyImg(image);
             document.getElementById('modal-img').onerror = function() { this.style.display = 'none'; };
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-price').innerText = `${price} V-Bucks (~${priceRub} ₽)`;
