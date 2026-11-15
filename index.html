@@ -39,20 +39,9 @@
             align-items: center;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .store-name {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--accent-color);
-            margin: 0;
-        }
+        .store-name { font-size: 18px; font-weight: 800; color: var(--accent-color); margin: 0; }
 
-        /* Главное меню */
-        .main-menu {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        .main-menu { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
         .category-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -62,19 +51,11 @@
             cursor: pointer;
             transition: transform 0.1s;
         }
-        .category-card:active {
-            transform: scale(0.97);
-        }
+        .category-card:active { transform: scale(0.97); }
         .category-card h2 { margin: 0; font-size: 22px; color: var(--text-color); }
         .category-card p { margin: 5px 0 0 0; color: #94a3b8; font-size: 13px; }
         
-        /* Сетка товаров */
-        .shop-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            padding: 15px;
-        }
+        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .item-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -96,21 +77,12 @@
             padding: 10px;
             box-sizing: border-box;
         }
-        .item-image img {
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain;
-        }
-        .item-details {
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-        }
+        .item-image img { width: 100%; height: 100%; object-fit: contain; }
+        .item-details { padding: 10px; display: flex; flex-direction: column; }
         .item-name { font-size: 13px; font-weight: bold; margin-bottom: 5px; }
         .item-price-v { font-size: 12px; color: #2dd4bf; font-weight: bold; }
         .item-price-rub { font-size: 11px; color: var(--rub-color); }
 
-        /* Модальное окно */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -132,12 +104,7 @@
             text-align: center;
             border: 1px solid var(--border-color);
         }
-        .modal-image {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
+        .modal-image { width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px; }
         .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
         .modal-price { font-size: 18px; color: #2dd4bf; font-weight: bold; margin-bottom: 20px; }
         .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
@@ -162,22 +129,10 @@
             cursor: pointer;
         }
 
-        /* Экраны */
-        .screen {
-            display: none;
-            flex-direction: column;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
+        .screen { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; }
         .screen.active { display: flex; }
 
-        .sub-tabs {
-            display: flex;
-            gap: 10px;
-            padding: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        .sub-tabs { display: flex; gap: 10px; padding: 15px; justify-content: center; flex-wrap: wrap; }
         .sub-tab {
             background: var(--card-bg);
             color: #94a3b8;
@@ -188,21 +143,10 @@
             cursor: pointer;
             font-size: 13px;
         }
-        .sub-tab.active {
-            background: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
-        }
+        .sub-tab.active { background: var(--accent-color); color: white; border-color: var(--accent-color); }
         
-        .empty-message {
-            text-align: center;
-            color: #64748b;
-            margin-top: 50px;
-            font-size: 16px;
-            grid-column: span 2;
-        }
+        .empty-message { text-align: center; color: #64748b; margin-top: 50px; font-size: 16px; grid-column: span 2; }
 
-        /* Нижнее меню */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -235,7 +179,6 @@
         <h1 class="store-name" id="header-title">FORTNITE STORE</h1>
     </div>
 
-    <!-- ГЛАВНАЯ -->
     <div id="screen-home" class="screen active">
         <div class="main-menu">
             <div class="category-card" onclick="openCategory('fortnite')">
@@ -245,7 +188,6 @@
         </div>
     </div>
 
-    <!-- РАЗДЕЛ FORTNITE -->
     <div id="screen-fortnite" class="screen">
         <div class="sub-tabs">
             <button class="sub-tab active" onclick="switchSubTab('skins')" id="tab-skins">Скины</button>
@@ -254,14 +196,12 @@
             <button class="sub-tab" onclick="switchSubTab('pets')" id="tab-pets">Питомцы</button>
         </div>
         
-        <!-- Сетки товаров -->
         <div id="grid-skins" class="shop-grid"></div>
         <div id="grid-pickaxes" class="shop-grid" style="display:none;"></div>
         <div id="grid-emotes" class="shop-grid" style="display:none;"></div>
         <div id="grid-pets" class="shop-grid" style="display:none;"></div>
     </div>
 
-    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
         <div style="padding: 20px; text-align: center;">
             <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
@@ -272,7 +212,6 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО -->
     <div class="modal-overlay" id="itemModal">
         <div class="modal-content">
             <img id="modal-img" class="modal-image" src="" alt="Item">
@@ -285,7 +224,6 @@
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home')" id="btn-home">
             <span class="nav-icon">🏠</span> Главная
@@ -303,37 +241,29 @@
         const TELEGRAM_CONTACT = "niyaz_5518"; 
         let selectedItem = null; 
 
-        // --- ФУНКЦИЯ ДЛЯ ОБХОДА БЛОКИРОВКИ КАРТИНОК ---
-        // Она заставляет картинку загружаться через надежный прокси-сервер
-        const proxyImg = (url) => `https://images.weserv.nl/?url=${encodeURIComponent(url)}`;
-
-        // --- БАЗА ТОВАРОВ ---
+        // ========================================================
+        // ⚠️ ВАЖНО: ЗДЕСЬ ТЫ МЕНЯЕШЬ КАРТИНКИ!
+        // Файлы (skin1.png, skin2.png и т.д.) должны лежать в том же репозитории,
+        // где и index.html. Имена файлов должны совпадать с написанными ниже.
+        // ========================================================
         const items = {
             skins: [
-                { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_028_athena_commando_f.png" },
-                { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f.png" },
-                { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_030_athena_commando_m.png" },
-                { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_049_athena_commando_f.png" },
-                { name: "Black Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_050_athena_commando_m.png" },
-                { name: "Drift", priceV: 950, priceRub: 900, image: "https://fortnite-api.com/images/cosmetics/br/cid_098_athena_commando_m.png" }
+                { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "skin1.png" },
+                { name: "Aerial Assault", priceV: 1200, priceRub: 1140, image: "skin2.png" },
+                { name: "Raptor", priceV: 1200, priceRub: 1140, image: "skin3.png" },
+                { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "skin4.png" }
             ],
             pickaxes: [
-                { name: "Default Pickaxe", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_001_default.png" },
-                { name: "Raider's Revenge", priceV: 800, priceRub: 760, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_021_raider.png" },
-                { name: "Rainbow Smash", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_028_rainbow.png" },
-                { name: "Star Wand", priceV: 800, priceRub: 760, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_012_starwand.png" }
+                { name: "Default Pickaxe", priceV: 500, priceRub: 475, image: "pick1.png" },
+                { name: "Raider's Revenge", priceV: 800, priceRub: 760, image: "pick2.png" }
             ],
             emotes: [
-                { name: "Floss", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_floss.png" },
-                { name: "Best Mates", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_bestmates.png" },
-                { name: "Orange Justice", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_orangejustice.png" },
-                { name: "Take The L", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_takethel.png" }
+                { name: "Floss", priceV: 500, priceRub: 475, image: "emote1.png" },
+                { name: "Best Mates", priceV: 500, priceRub: 475, image: "emote2.png" }
             ],
             pets: [
-                { name: "Bonesy", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_001_bonesy.png" },
-                { name: "Camo", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_002_camo.png" },
-                { name: "Gunmetal", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_003_gunmetal.png" },
-                { name: "Chihuahua", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_014_chihuahua.png" }
+                { name: "Bonesy", priceV: 1000, priceRub: 950, image: "pet1.png" },
+                { name: "Camo", priceV: 1000, priceRub: 950, image: "pet2.png" }
             ]
         };
 
@@ -354,7 +284,6 @@
                 document.getElementById('btn-home').classList.remove('active');
                 document.getElementById('header-title').innerText = "Раздел Fortnite";
                 
-                // Рендерим все вкладки один раз при входе
                 renderCategory('skins', items.skins);
                 renderCategory('pickaxes', items.pickaxes);
                 renderCategory('emotes', items.emotes);
@@ -365,7 +294,6 @@
         function switchSubTab(tab) {
             document.querySelectorAll('.sub-tab').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tab-' + tab).classList.add('active');
-
             document.querySelectorAll('.shop-grid').forEach(grid => grid.style.display = 'none');
             document.getElementById('grid-' + tab).style.display = 'grid';
         }
@@ -379,11 +307,8 @@
                 card.className = 'item-card';
                 card.onclick = () => openModal(item.name, item.priceV, item.priceRub, item.image);
                 
-                // ИСПОЛЬЗУЕМ ПРОКСИ ДЛЯ КАРТИНОК
-                const safeImage = proxyImg(item.image);
-                
                 card.innerHTML = `
-                    <div class="item-image"><img src="${safeImage}" alt="${item.name}" onerror="this.style.display='none'"></div>
+                    <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
                     <div class="item-details">
                         <div class="item-name">${item.name}</div>
                         <div class="item-price-v">${item.priceV} V-Bucks</div>
@@ -396,9 +321,7 @@
 
         function openModal(name, price, priceRub, image) {
             selectedItem = { name: name, price: price };
-            // Прокси для большой картинки в модальном окне
-            document.getElementById('modal-img').src = proxyImg(image);
-            document.getElementById('modal-img').onerror = function() { this.style.display = 'none'; };
+            document.getElementById('modal-img').src = image;
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-price').innerText = `${price} V-Bucks (~${priceRub} ₽)`;
             document.getElementById('itemModal').classList.add('active');
