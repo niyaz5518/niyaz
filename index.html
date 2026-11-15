@@ -29,14 +29,13 @@
             box-sizing: border-box;
         }
         
-        /* --- ШАПКА --- */
         .header {
             background: var(--card-bg);
             padding: 15px;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
@@ -47,66 +46,12 @@
             margin: 0;
         }
         
-        /* --- ЭКРАН 1: ГЛАВНОЕ МЕНЮ --- */
-        .main-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding: 20px;
-        }
-        .menu-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-        .menu-card:active {
-            transform: scale(0.97);
-        }
-        .menu-card h2 {
-            margin: 0;
-            font-size: 22px;
-            color: var(--text-color);
-        }
-        .menu-card p {
-            margin: 5px 0 0 0;
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        /* --- ЭКРАН 2: РАЗДЕЛ FORTNITE --- */
-        .sub-tabs {
-            display: flex;
-            gap: 10px;
-            padding: 15px;
-            justify-content: center;
-        }
-        .sub-tab {
-            background: var(--card-bg);
-            color: #94a3b8;
-            border: 1px solid var(--border-color);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-        .sub-tab.active {
-            background: var(--accent-color);
-            color: white;
-            border-color: var(--accent-color);
-        }
-
         /* --- СЕТКА ТОВАРОВ --- */
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            padding: 0 15px;
+            padding: 15px;
         }
         .item-card {
             background: var(--card-bg);
@@ -234,7 +179,6 @@
             display: flex;
         }
 
-        /* --- ПРОЧЕЕ --- */
         .empty-message {
             text-align: center;
             color: #64748b;
@@ -247,7 +191,7 @@
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
-            height: 60px;
+            height: 65px;
             background: var(--card-bg);
             display: flex;
             justify-content: space-around;
@@ -256,15 +200,45 @@
             z-index: 100;
         }
         .nav-item {
-            font-size: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             color: #64748b;
             cursor: pointer;
-            padding: 10px;
+            font-size: 12px;
+            padding: 5px 10px;
             transition: 0.2s;
+            width: 30%;
+        }
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: 3px;
         }
         .nav-item.active {
             color: var(--accent-color);
-            transform: scale(1.1);
+        }
+        
+        /* --- КНОПКИ В РАЗДЕЛЕ FORTNITE --- */
+        .sub-tabs {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            justify-content: center;
+        }
+        .sub-tab {
+            background: var(--card-bg);
+            color: #94a3b8;
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .sub-tab.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
         }
     </style>
 </head>
@@ -272,47 +246,39 @@
 
     <div class="header">
         <h1 class="store-name" id="header-title">FORTNITE STORE</h1>
-        <button class="btn-close" style="padding: 5px 15px; font-size: 12px;" onclick="goBack()" id="back-btn">Назад</button>
     </div>
 
-    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ -->
+    <!-- ЭКРАН 1: ГЛАВНАЯ (Все скины) -->
     <div id="screen-home" class="screen active">
-        <div class="main-menu">
-            <div class="menu-card" onclick="openSection('fortnite')">
-                <h2>Fortnite</h2>
-                <p>Скины, кирки, танцы</p>
-            </div>
-            <div class="menu-card" onclick="openSection('other')">
-                <h2>Прочее</h2>
-                <p>Различные услуги и предметы</p>
-            </div>
+        <div class="shop-grid" id="grid-home">
+            <!-- Скины загрузятся сюда -->
         </div>
     </div>
 
-    <!-- ЭКРАН 2: РАЗДЕЛ FORTNITE -->
+    <!-- ЭКРАН 2: РАЗДЕЛ FORTNITE (С подкатегориями) -->
     <div id="screen-fortnite" class="screen">
-        <!-- Подкатегории -->
         <div class="sub-tabs">
             <button class="sub-tab active" onclick="switchSubTab('skins')" id="tab-skins">Скины</button>
-            <button class="sub-tab" onclick="switchSubTab('other_ft')" id="tab-other_ft">Прочее</button>
+            <button class="sub-tab" onclick="switchSubTab('other')" id="tab-other">Прочее</button>
         </div>
-
-        <!-- Товары: Скины -->
+        
         <div id="grid-skins" class="shop-grid">
-            <!-- Заполняется через JS -->
+            <!-- Скины загрузятся сюда -->
         </div>
-
-        <!-- Товары: Прочее в Фортрайт -->
-        <div id="grid-other_ft" class="shop-grid" style="display: none;">
-            <div class="empty-message">Тут скоро появятся кирки и танцы</div>
+        
+        <div id="grid-other-ft" class="shop-grid" style="display:none;">
+            <div class="empty-message">Здесь скоро появятся кирки и танцы</div>
         </div>
     </div>
 
-    <!-- ЭКРАН 3: ПРОЧЕЕ (Глобальное) -->
-    <div id="screen-other" class="screen">
-        <div style="padding: 20px; text-align: center; color: #94a3b8;">
-            <h2>Раздел в разработке</h2>
-            <p>Здесь будут другие товары и услуги.</p>
+    <!-- ЭКРАН 3: ПРОФИЛЬ / ИНФО -->
+    <div id="screen-profile" class="screen">
+        <div style="padding: 20px; text-align: center;">
+            <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
+                <h3 style="margin-top:0; color: var(--accent-color);">FORTNITE STORE</h3>
+                <p style="color: #94a3b8;">Добро пожаловать! Выберите скин и нажмите «Купить».</p>
+                <a href="https://t.me/niyaz_5518" target="_blank" style="display:inline-block; margin-top:15px; background:var(--accent-color); color:white; text-decoration:none; padding:10px 20px; border-radius:8px; font-weight:bold;">Написать нам</a>
+            </div>
         </div>
     </div>
 
@@ -322,7 +288,6 @@
             <img id="modal-img" class="modal-image" src="" alt="Item">
             <div class="modal-title" id="modal-name"></div>
             <div class="modal-price" id="modal-price"></div>
-            
             <div class="modal-buttons">
                 <button class="btn-buy" onclick="confirmPurchase()">Купить</button>
                 <button class="btn-close" onclick="closeModal()">Отмена</button>
@@ -330,9 +295,20 @@
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ -->
+    <!-- НИЖНЕЕ МЕНЮ (3 КНОПКИ) -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="goHome()">🏠</div>
+        <div class="nav-item active" onclick="switchTab('home')" id="btn-home">
+            <span class="nav-icon">🏠</span>
+            Главная
+        </div>
+        <div class="nav-item" onclick="switchTab('fortnite')" id="btn-fortnite">
+            <span class="nav-icon">🎮</span>
+            Fortnite
+        </div>
+        <div class="nav-item" onclick="switchTab('profile')" id="btn-profile">
+            <span class="nav-icon">👤</span>
+            Профиль
+        </div>
     </div>
 
     <script>
@@ -340,12 +316,10 @@
         tg.ready();
         tg.expand();
 
-        // ⚠️ Твой ник в Telegram (без @)
         const TELEGRAM_CONTACT = "niyaz_5518"; 
-
         let selectedItem = null; 
 
-        // --- СПИСОК СКИНОВ ---
+        // СПИСОК ВСЕХ СКИНОВ
         const storeSkins = [
             { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/5/5b/Renegade_Raider_-_Outfit_-_Fortnite.png" },
             { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/9/91/Aerial_Assault_Trooper_-_Outfit_-_Fortnite.png" },
@@ -357,70 +331,66 @@
             { name: "Peely", priceV: 800, priceRub: 760, image: "https://static.wikia.nocookie.net/fortnite/images/4/48/Peely_-_Outfit_-_Fortnite.png" }
         ];
 
-        // --- НАВИГАЦИЯ ---
-        function showScreen(screenId) {
+        // --- НАВИГАЦИЯ ПО НИЖНЕМУ МЕНЮ ---
+        function switchTab(tabName) {
+            // 1. Скрываем все экраны
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screen-' + screenId).classList.add('active');
-            
-            // Показываем/скрываем кнопку Назад
-            document.getElementById('back-btn').style.display = screenId === 'home' ? 'none' : 'block';
+            // 2. Убираем активный класс со всех кнопок
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
+            // 3. Показываем нужный экран
+            document.getElementById('screen-' + tabName).classList.add('active');
+            // 4. Красим нужную кнопку
+            document.getElementById('btn-' + tabName).classList.add('active');
+
+            // 5. Меняем заголовок в шапке
+            if (tabName === 'home') document.getElementById('header-title').innerText = "Все скины";
+            if (tabName === 'fortnite') document.getElementById('header-title').innerText = "Раздел Fortnite";
+            if (tabName === 'profile') document.getElementById('header-title').innerText = "Информация";
         }
 
-        function goHome() {
-            showScreen('home');
-            document.querySelector('.nav-item').classList.add('active');
-            document.getElementById('header-title').innerText = "FORTNITE STORE";
-        }
-
-        function openSection(section) {
-            if (section === 'fortnite') {
-                showScreen('fortnite');
-                document.getElementById('header-title').innerText = "Раздел Fortnite";
-                renderSkins();
-            } else {
-                showScreen('other');
-                document.getElementById('header-title').innerText = "Прочее";
-            }
-        }
-
-        function goBack() {
-            goHome();
-        }
-
-        // --- ПОДКАТЕГОРИИ (Скины / Прочее в Фортрайт) ---
+        // Переключение подкатегорий внутри Фортрайт
         function switchSubTab(tab) {
             document.getElementById('tab-skins').classList.remove('active');
-            document.getElementById('tab-other_ft').classList.remove('active');
+            document.getElementById('tab-other').classList.remove('active');
             document.getElementById('tab-' + tab).classList.add('active');
 
             if (tab === 'skins') {
                 document.getElementById('grid-skins').style.display = 'grid';
-                document.getElementById('grid-other_ft').style.display = 'none';
+                document.getElementById('grid-other-ft').style.display = 'none';
             } else {
                 document.getElementById('grid-skins').style.display = 'none';
-                document.getElementById('grid-other_ft').style.display = 'grid';
+                document.getElementById('grid-other-ft').style.display = 'grid';
             }
         }
 
-        // --- ОТРИСОВКА СКИНОВ ---
+        // --- ОТРИСОВКА СКИНОВ (на главную и в раздел Fortnite) ---
         function renderSkins() {
-            const container = document.getElementById('grid-skins');
-            container.innerHTML = '';
+            const gridHome = document.getElementById('grid-home');
+            const gridFt = document.getElementById('grid-skins');
+            gridHome.innerHTML = '';
+            gridFt.innerHTML = '';
 
             storeSkins.forEach((skin) => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.onclick = () => openModal(skin.name, skin.priceV, skin.priceRub, skin.image);
+                // Создаем карточку
+                const createCard = () => {
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    card.onclick = () => openModal(skin.name, skin.priceV, skin.priceRub, skin.image);
+                    card.innerHTML = `
+                        <div class="item-image"><img src="${skin.image}" alt="${skin.name}"></div>
+                        <div class="item-details">
+                            <div class="item-name">${skin.name}</div>
+                            <div class="item-price-v">${skin.priceV} V-Bucks</div>
+                            <div class="item-price-rub">~ ${skin.priceRub} ₽</div>
+                        </div>
+                    `;
+                    return card;
+                };
 
-                card.innerHTML = `
-                    <div class="item-image"><img src="${skin.image}" alt="${skin.name}"></div>
-                    <div class="item-details">
-                        <div class="item-name">${skin.name}</div>
-                        <div class="item-price-v">${skin.priceV} V-Bucks</div>
-                        <div class="item-price-rub">~ ${skin.priceRub} ₽</div>
-                    </div>
-                `;
-                container.appendChild(card);
+                // Добавляем на главную и в раздел
+                gridHome.appendChild(createCard());
+                gridFt.appendChild(createCard());
             });
         }
 
@@ -438,6 +408,7 @@
             selectedItem = null;
         }
 
+        // --- ПОКУПКА И ПЕРЕХОД В ЧАТ ---
         function confirmPurchase() {
             if (!selectedItem) return;
             closeModal();
@@ -453,8 +424,8 @@
             });
         }
 
-        // Инициализация при запуске
-        goHome();
+        // Запуск
+        renderSkins();
     </script>
 </body>
 </html>
