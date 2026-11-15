@@ -15,59 +15,35 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--tg-theme-bg-color, var(--bg-color));
             color: var(--tg-theme-text-color, var(--text-color));
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            padding-bottom: 70px;
-            box-sizing: border-box;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column;
+            height: 100vh; padding-bottom: 70px; box-sizing: border-box;
         }
-        
         .header {
-            background: var(--card-bg);
-            padding: 15px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: var(--card-bg); padding: 15px;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+            display: flex; justify-content: center; align-items: center;
         }
         .store-name { font-size: 18px; font-weight: 800; color: var(--accent-color); margin: 0; }
-
+        
         .main-menu { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
         .category-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
+            background: var(--card-bg); border-radius: 16px; padding: 25px;
+            text-align: center; border: 1px solid var(--border-color); cursor: pointer;
         }
-        .category-card h2 { margin: 0; font-size: 22px; color: var(--text-color); }
+        .category-card h2 { margin: 0; font-size: 22px; }
         
         .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .item-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
+            background: var(--card-bg); border-radius: 16px; overflow: hidden;
+            display: flex; flex-direction: column; border: 1px solid var(--border-color); cursor: pointer;
         }
         .item-image {
-            width: 100%;
-            height: 120px;
-            background: var(--card-bg); /* Убрали градиент, чтобы не было видно пустых мест */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            box-sizing: border-box;
+            width: 100%; height: 120px; background: var(--card-bg);
+            display: flex; align-items: center; justify-content: center; padding: 10px; box-sizing: border-box;
         }
         .item-image img { width: 100%; height: 100%; object-fit: contain; }
         .item-details { padding: 10px; display: flex; flex-direction: column; }
@@ -76,47 +52,25 @@
         .item-price-rub { font-size: 11px; color: #94a3b8; }
 
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;
         }
         .modal-overlay.active { display: flex; }
         .modal-content {
-            background: var(--card-bg);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid var(--border-color);
+            background: var(--card-bg); border-radius: 20px; width: 100%; max-width: 400px;
+            padding: 20px; text-align: center; border: 1px solid var(--border-color);
         }
         .modal-image { width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px; }
         .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
         .modal-price { font-size: 18px; color: #2dd4bf; font-weight: bold; margin-bottom: 20px; }
         .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
         .btn-buy {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
+            background: var(--accent-color); color: white; border: none;
+            padding: 12px; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer;
         }
         .btn-close {
-            background: transparent;
-            color: #94a3b8;
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
+            background: transparent; color: #94a3b8; border: 1px solid var(--border-color);
+            padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer;
         }
 
         .screen { display: none; flex-direction: column; flex-grow: 1; overflow-y: auto; }
@@ -124,46 +78,25 @@
 
         .sub-tabs { display: flex; gap: 10px; padding: 15px; justify-content: center; flex-wrap: wrap; }
         .sub-tab {
-            background: var(--card-bg);
-            color: #94a3b8;
-            border: 1px solid var(--border-color);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
+            background: var(--card-bg); color: #94a3b8; border: 1px solid var(--border-color);
+            padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 13px;
         }
         .sub-tab.active { background: var(--accent-color); color: white; border-color: var(--accent-color); }
 
         .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 65px;
-            background: var(--card-bg);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid var(--border-color);
-            z-index: 100;
+            position: fixed; bottom: 0; left: 0; right: 0; height: 65px;
+            background: var(--card-bg); display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid var(--border-color); z-index: 100;
         }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #64748b;
-            font-size: 12px;
-            width: 45%;
-        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #64748b; font-size: 12px; width: 45%; }
         .nav-icon { font-size: 22px; margin-bottom: 3px; }
         .nav-item.active { color: var(--accent-color); }
     </style>
 </head>
 <body>
+    <div class="header"><h1 class="store-name" id="header-title">FORTNITE STORE</h1></div>
 
-    <div class="header">
-        <h1 class="store-name" id="header-title">FORTNITE STORE</h1>
-    </div>
-
+    <!-- ГЛАВНЫЙ ЭКРАН -->
     <div id="screen-home" class="screen active">
         <div class="main-menu">
             <div class="category-card" onclick="openCategory('fortnite')">
@@ -173,6 +106,7 @@
         </div>
     </div>
 
+    <!-- РАЗДЕЛ FORTNITE -->
     <div id="screen-fortnite" class="screen">
         <div class="sub-tabs">
             <button class="sub-tab active" onclick="switchSubTab('skins')" id="tab-skins">Скины</button>
@@ -180,13 +114,13 @@
             <button class="sub-tab" onclick="switchSubTab('emotes')" id="tab-emotes">Эмоции</button>
             <button class="sub-tab" onclick="switchSubTab('pets')" id="tab-pets">Питомцы</button>
         </div>
-        
         <div id="grid-skins" class="shop-grid"></div>
         <div id="grid-pickaxes" class="shop-grid" style="display:none;"></div>
         <div id="grid-emotes" class="shop-grid" style="display:none;"></div>
         <div id="grid-pets" class="shop-grid" style="display:none;"></div>
     </div>
 
+    <!-- ПРОФИЛЬ -->
     <div id="screen-profile" class="screen">
         <div style="padding: 20px; text-align: center;">
             <div style="background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
@@ -197,6 +131,7 @@
         </div>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО -->
     <div class="modal-overlay" id="itemModal">
         <div class="modal-content">
             <img id="modal-img" class="modal-image" src="" alt="Item">
@@ -209,6 +144,7 @@
         </div>
     </div>
 
+    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home')" id="btn-home">
             <span class="nav-icon">🏠</span> Главная
@@ -220,34 +156,32 @@
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
-
+        tg.ready(); tg.expand();
         const TELEGRAM_CONTACT = "niyaz_5518"; 
         let selectedItem = null; 
 
-        // ========================================================
-        // ⚠️ КАРТИНКИ БЕРУТСЯ С НАДЕЖНОГО САЙТА
-        // Я добавил знак "?" в конец ссылки, чтобы картинки грузились заново.
-        // ========================================================
+        // =====================================================================
+        // ⚠️ ВНИМАНИЕ: ЗДЕСЬ МЫ УКАЗЫВАЕМ ИМЕНА ФАЙЛОВ КАРТИНОК.
+        // Эти файлы должны быть загружены в GitHub рядом с index.html!
+        // =====================================================================
         const items = {
             skins: [
-                { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_028_athena_commando_f.png?" },
-                { name: "Aerial Assault", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f.png?" },
-                { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_030_athena_commando_m.png?" },
-                { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_049_athena_commando_f.png?" }
+                { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "skin1.png" },
+                { name: "Aerial Assault", priceV: 1200, priceRub: 1140, image: "skin2.png" },
+                { name: "Raptor", priceV: 1200, priceRub: 1140, image: "skin3.png" },
+                { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "skin4.png" }
             ],
             pickaxes: [
-                { name: "Default Pickaxe", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_001_default.png?" },
-                { name: "Raider's Revenge", priceV: 800, priceRub: 760, image: "https://fortnite-api.com/images/cosmetics/br/pickaxe_id_021_raider.png?" }
+                { name: "Default Pickaxe", priceV: 500, priceRub: 475, image: "pick1.png" },
+                { name: "Raider's Revenge", priceV: 800, priceRub: 760, image: "pick2.png" }
             ],
             emotes: [
-                { name: "Floss", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_floss.png?" },
-                { name: "Best Mates", priceV: 500, priceRub: 475, image: "https://fortnite-api.com/images/cosmetics/br/eid_bestmates.png?" }
+                { name: "Floss", priceV: 500, priceRub: 475, image: "emote1.png" },
+                { name: "Best Mates", priceV: 500, priceRub: 475, image: "emote2.png" }
             ],
             pets: [
-                { name: "Bonesy", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_001_bonesy.png?" },
-                { name: "Camo", priceV: 1000, priceRub: 950, image: "https://fortnite-api.com/images/cosmetics/br/bid_002_camo.png?" }
+                { name: "Bonesy", priceV: 1000, priceRub: 950, image: "pet1.png" },
+                { name: "Camo", priceV: 1000, priceRub: 950, image: "pet2.png" }
             ]
         };
 
@@ -256,9 +190,7 @@
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             document.getElementById('screen-' + tabName).classList.add('active');
             document.getElementById('btn-' + tabName).classList.add('active');
-            
-            if (tabName === 'home') document.getElementById('header-title').innerText = "FORTNITE STORE";
-            if (tabName === 'profile') document.getElementById('header-title').innerText = "Информация";
+            document.getElementById('header-title').innerText = tabName === 'home' ? "FORTNITE STORE" : "Информация";
         }
 
         function openCategory(category) {
@@ -267,7 +199,6 @@
                 document.getElementById('screen-fortnite').classList.add('active');
                 document.getElementById('btn-home').classList.remove('active');
                 document.getElementById('header-title').innerText = "Раздел Fortnite";
-                
                 renderCategory('skins', items.skins);
                 renderCategory('pickaxes', items.pickaxes);
                 renderCategory('emotes', items.emotes);
@@ -285,17 +216,12 @@
         function renderCategory(categoryId, itemsList) {
             const grid = document.getElementById('grid-' + categoryId);
             grid.innerHTML = '';
-
             itemsList.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = 'item-card';
                 card.onclick = () => openModal(item.name, item.priceV, item.priceRub, item.image);
-                
-                // Если картинка не загрузится, мы скроем ее (onerror), чтобы не было вопроса
                 card.innerHTML = `
-                    <div class="item-image">
-                        <img src="${item.image}" alt="${item.name}" onerror="this.style.display='none'">
-                    </div>
+                    <div class="item-image"><img src="${item.image}" alt="${item.name}" onerror="this.style.display='none'"></div>
                     <div class="item-details">
                         <div class="item-name">${item.name}</div>
                         <div class="item-price-v">${item.priceV} V-Bucks</div>
@@ -309,7 +235,6 @@
         function openModal(name, price, priceRub, image) {
             selectedItem = { name: name, price: price };
             document.getElementById('modal-img').src = image;
-            // Тоже скрываем, если не загрузится
             document.getElementById('modal-img').onerror = function() { this.style.display = 'none'; };
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-price').innerText = `${price} V-Bucks (~${priceRub} ₽)`;
