@@ -330,17 +330,20 @@
         let currentLang = 'ru';
         let selectedItem = null; 
 
-        // --- РЕЗЕРВНЫЙ СПИСОК СКИНОВ (ЕСЛИ API НЕ РАБОТАЕТ) ---
-        // Если интернет-запрос упадет, мы покажем эти скины.
-        const fallbackSkins = [
-            { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_028_athena_commando_f.png" },
-            { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_029_athena_commando_f.png" },
-            { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_030_athena_commando_m.png" },
-            { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_049_athena_commando_f.png" },
-            { name: "Black Knight", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_050_athena_commando_m.png" },
-            { name: "Drift", priceV: 950, priceRub: 900, image: "https://fortnite-api.com/images/cosmetics/br/cid_098_athena_commando_m.png" },
-            { name: "Ragnarok", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_099_athena_commando_m.png" },
-            { name: "Calamity", priceV: 1200, priceRub: 1140, image: "https://fortnite-api.com/images/cosmetics/br/cid_100_athena_commando_f.png" }
+        // --- СПИСОК СКИНОВ (КАРТИНКИ С НАДЕЖНОГО САЙТА FANDOM) ---
+        const storeItems = [
+            { name: "Renegade Raider", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/5/5b/Renegade_Raider_-_Outfit_-_Fortnite.png" },
+            { name: "Aerial Assault Trooper", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/9/91/Aerial_Assault_Trooper_-_Outfit_-_Fortnite.png" },
+            { name: "Raptor", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/e/e3/Raptor_-_Outfit_-_Fortnite.png" },
+            { name: "Red Knight", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/1/1c/Red_Knight_-_Outfit_-_Fortnite.png" },
+            { name: "Black Knight", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/0/0f/Black_Knight_-_Outfit_-_Fortnite.png" },
+            { name: "Drift", priceV: 950, priceRub: 900, image: "https://static.wikia.nocookie.net/fortnite/images/3/3e/Drift_-_Outfit_-_Fortnite.png" },
+            { name: "Ragnarok", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/8/86/Ragnarok_-_Outfit_-_Fortnite.png" },
+            { name: "Calamity", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/4/4e/Calamity_-_Outfit_-_Fortnite.png" },
+            { name: "John Wick", priceV: 1000, priceRub: 950, image: "https://static.wikia.nocookie.net/fortnite/images/2/2e/John_Wick_-_Outfit_-_Fortnite.png" },
+            { name: "Midas", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/9/9c/Midas_-_Outfit_-_Fortnite.png" },
+            { name: "Raven", priceV: 1200, priceRub: 1140, image: "https://static.wikia.nocookie.net/fortnite/images/1/1f/Raven_-_Outfit_-_Fortnite.png" },
+            { name: "Peely", priceV: 800, priceRub: 760, image: "https://static.wikia.nocookie.net/fortnite/images/4/48/Peely_-_Outfit_-_Fortnite.png" }
         ];
 
         function switchTab(tabName) {
@@ -353,51 +356,26 @@
             if (tabName === 'profile') document.querySelectorAll('.nav-item')[1].classList.add('active');
         }
 
-        async function fetchFortniteSkins() {
-            try {
-                const response = await fetch('https://fortnite-api.com/v2/cosmetics/br');
-                if (!response.ok) throw new Error("API Error");
-                const data = await response.json();
-                
-                const container = document.getElementById('shop-container');
-                container.innerHTML = '';
+        // Загружаем скины из нашего списка (работает 100%)
+        function renderShop() {
+            const container = document.getElementById('shop-container');
+            container.innerHTML = '';
 
-                // Берем 40 скинов из API
-                const skins = data.data.slice(0, 40);
+            storeItems.forEach((skin) => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.onclick = () => openModal(skin.name, skin.priceV, skin.priceRub, skin.image);
 
-                skins.forEach((skin) => {
-                    const priceV = Math.floor(Math.random() * 12 + 1) * 100; 
-                    const priceRub = Math.floor(priceV * 0.95);
-                    renderCard(skin.name, priceV, priceRub, skin.images.icon, container);
-                });
-
-            } catch (error) {
-                // ЕСЛИ ПРОИЗОШЛА ОШИБКА (API УПАЛ), ЗАГРУЖАЕМ РЕЗЕРВНЫЙ СПИСОК
-                console.warn("API не отвечает, загружаем резервные скины.");
-                const container = document.getElementById('shop-container');
-                container.innerHTML = '';
-                
-                fallbackSkins.forEach((skin) => {
-                    renderCard(skin.name, skin.priceV, skin.priceRub, skin.image, container);
-                });
-            }
-        }
-
-        // Вспомогательная функция для создания карточки
-        function renderCard(name, priceV, priceRub, imageUrl, container) {
-            const card = document.createElement('div');
-            card.className = 'item-card';
-            card.onclick = () => openModal(name, priceV, priceRub, imageUrl);
-
-            card.innerHTML = `
-                <div class="item-image"><img src="${imageUrl}" alt="${name}"></div>
-                <div class="item-details">
-                    <div class="item-name">${name}</div>
-                    <div class="item-price-v">${priceV} V-Bucks</div>
-                    <div class="item-price-rub">~ ${priceRub} ₽</div>
-                </div>
-            `;
-            container.appendChild(card);
+                card.innerHTML = `
+                    <div class="item-image"><img src="${skin.image}" alt="${skin.name}"></div>
+                    <div class="item-details">
+                        <div class="item-name">${skin.name}</div>
+                        <div class="item-price-v">${skin.priceV} V-Bucks</div>
+                        <div class="item-price-rub">~ ${skin.priceRub} ₽</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         function openModal(name, price, priceRub, image) {
@@ -417,12 +395,11 @@
 
         function confirmPurchase() {
             if (!selectedItem) return;
-
             closeModal();
 
             tg.showPopup({
                 title: 'Переход в чат',
-                message: `Вы выбрали "${selectedItem.name}". Сейчас откроется чат с продавцом для оформления покупки.`,
+                message: `Вы выбрали "${selectedItem.name}". Сейчас откроется чат с продавцом.`,
                 buttons: [{type: 'ok', text: 'Перейти в чат'}, {type: 'cancel', text: 'Отмена'}]
             }, (buttonId) => {
                 if (buttonId === 'ok') {
@@ -453,7 +430,8 @@
                 `${translations[currentLang].timerPrefix}${hours}ч ${minutes}м ${seconds}с`;
         }
 
-        fetchFortniteSkins();
+        // Запуск
+        renderShop();
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
